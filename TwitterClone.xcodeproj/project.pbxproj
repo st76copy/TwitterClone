@@ -14,14 +14,16 @@
 		96EF394218921F56006D408C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EF394118921F56006D408C /* main.m */; };
 		96EF394618921F56006D408C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EF394518921F56006D408C /* AppDelegate.m */; };
 		96EF394918921F56006D408C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96EF394718921F56006D408C /* Main.storyboard */; };
-		96EF394C18921F56006D408C /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EF394B18921F56006D408C /* MasterViewController.m */; };
-		96EF394F18921F57006D408C /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EF394E18921F57006D408C /* DetailViewController.m */; };
+		96EF394C18921F56006D408C /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EF394B18921F56006D408C /* TimelineViewController.m */; };
+		96EF394F18921F57006D408C /* TweetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EF394E18921F57006D408C /* TweetViewController.m */; };
 		96EF395118921F57006D408C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96EF395018921F57006D408C /* Images.xcassets */; };
 		96EF395818921F57006D408C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96EF395718921F57006D408C /* XCTest.framework */; };
 		96EF395918921F57006D408C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96EF393518921F56006D408C /* Foundation.framework */; };
 		96EF395A18921F57006D408C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96EF393918921F56006D408C /* UIKit.framework */; };
 		96EF396218921F57006D408C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 96EF396018921F57006D408C /* InfoPlist.strings */; };
 		96EF396418921F57006D408C /* TwitterCloneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EF396318921F57006D408C /* TwitterCloneTests.m */; };
+		96EF396F18922612006D408C /* TweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EF396E18922612006D408C /* TweetCell.m */; };
+		96EF3972189226CE006D408C /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EF3971189226CE006D408C /* Tweet.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,16 +48,20 @@
 		96EF394418921F56006D408C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		96EF394518921F56006D408C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		96EF394818921F56006D408C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		96EF394A18921F56006D408C /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
-		96EF394B18921F56006D408C /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
-		96EF394D18921F56006D408C /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		96EF394E18921F57006D408C /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		96EF394A18921F56006D408C /* TimelineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineViewController.h; sourceTree = "<group>"; };
+		96EF394B18921F56006D408C /* TimelineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineViewController.m; sourceTree = "<group>"; };
+		96EF394D18921F56006D408C /* TweetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TweetViewController.h; sourceTree = "<group>"; };
+		96EF394E18921F57006D408C /* TweetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TweetViewController.m; sourceTree = "<group>"; };
 		96EF395018921F57006D408C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		96EF395618921F57006D408C /* TwitterCloneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwitterCloneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96EF395718921F57006D408C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		96EF395F18921F57006D408C /* TwitterCloneTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TwitterCloneTests-Info.plist"; sourceTree = "<group>"; };
 		96EF396118921F57006D408C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		96EF396318921F57006D408C /* TwitterCloneTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwitterCloneTests.m; sourceTree = "<group>"; };
+		96EF396D18922612006D408C /* TweetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetCell.h; sourceTree = "<group>"; };
+		96EF396E18922612006D408C /* TweetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetCell.m; sourceTree = "<group>"; };
+		96EF3970189226CE006D408C /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
+		96EF3971189226CE006D408C /* Tweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tweet.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,10 +124,14 @@
 				96EF394418921F56006D408C /* AppDelegate.h */,
 				96EF394518921F56006D408C /* AppDelegate.m */,
 				96EF394718921F56006D408C /* Main.storyboard */,
-				96EF394A18921F56006D408C /* MasterViewController.h */,
-				96EF394B18921F56006D408C /* MasterViewController.m */,
-				96EF394D18921F56006D408C /* DetailViewController.h */,
-				96EF394E18921F57006D408C /* DetailViewController.m */,
+				96EF3970189226CE006D408C /* Tweet.h */,
+				96EF3971189226CE006D408C /* Tweet.m */,
+				96EF396D18922612006D408C /* TweetCell.h */,
+				96EF396E18922612006D408C /* TweetCell.m */,
+				96EF394A18921F56006D408C /* TimelineViewController.h */,
+				96EF394B18921F56006D408C /* TimelineViewController.m */,
+				96EF394D18921F56006D408C /* TweetViewController.h */,
+				96EF394E18921F57006D408C /* TweetViewController.m */,
 				96EF395018921F57006D408C /* Images.xcassets */,
 				96EF393C18921F56006D408C /* Supporting Files */,
 			);
@@ -255,9 +265,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				96EF394618921F56006D408C /* AppDelegate.m in Sources */,
-				96EF394C18921F56006D408C /* MasterViewController.m in Sources */,
+				96EF394C18921F56006D408C /* TimelineViewController.m in Sources */,
 				96EF394218921F56006D408C /* main.m in Sources */,
-				96EF394F18921F57006D408C /* DetailViewController.m in Sources */,
+				96EF3972189226CE006D408C /* Tweet.m in Sources */,
+				96EF396F18922612006D408C /* TweetCell.m in Sources */,
+				96EF394F18921F57006D408C /* TweetViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

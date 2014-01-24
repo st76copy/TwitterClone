@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Amber Roy. All rights reserved.
 //
 
-#import "DetailViewController.h"
+#import "TweetViewController.h"
 
-@interface DetailViewController ()
+@interface TweetViewController ()
 - (void)configureView;
 @end
 
-@implementation DetailViewController
+@implementation TweetViewController
 
 #pragma mark - Managing the detail item
 
