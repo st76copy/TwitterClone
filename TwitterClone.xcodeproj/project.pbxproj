@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		965B46AC18945E2F007AA374 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965B46AB18945E2F007AA374 /* LoginViewController.m */; };
+		965B46AF18945E49007AA374 /* ComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965B46AE18945E49007AA374 /* ComposeViewController.m */; };
 		96EF393618921F56006D408C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96EF393518921F56006D408C /* Foundation.framework */; };
 		96EF393818921F56006D408C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96EF393718921F56006D408C /* CoreGraphics.framework */; };
 		96EF393A18921F56006D408C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96EF393918921F56006D408C /* UIKit.framework */; };
@@ -37,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		965B46AA18945E2F007AA374 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		965B46AB18945E2F007AA374 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		965B46AD18945E49007AA374 /* ComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeViewController.h; sourceTree = "<group>"; };
+		965B46AE18945E49007AA374 /* ComposeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeViewController.m; sourceTree = "<group>"; };
 		96EF393218921F55006D408C /* TwitterClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96EF393518921F56006D408C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		96EF393718921F56006D408C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -124,6 +130,10 @@
 				96EF394418921F56006D408C /* AppDelegate.h */,
 				96EF394518921F56006D408C /* AppDelegate.m */,
 				96EF394718921F56006D408C /* Main.storyboard */,
+				965B46AA18945E2F007AA374 /* LoginViewController.h */,
+				965B46AB18945E2F007AA374 /* LoginViewController.m */,
+				965B46AD18945E49007AA374 /* ComposeViewController.h */,
+				965B46AE18945E49007AA374 /* ComposeViewController.m */,
 				96EF3970189226CE006D408C /* Tweet.h */,
 				96EF3971189226CE006D408C /* Tweet.m */,
 				96EF396D18922612006D408C /* TweetCell.h */,
@@ -268,8 +278,10 @@
 				96EF394C18921F56006D408C /* TimelineViewController.m in Sources */,
 				96EF394218921F56006D408C /* main.m in Sources */,
 				96EF3972189226CE006D408C /* Tweet.m in Sources */,
+				965B46AC18945E2F007AA374 /* LoginViewController.m in Sources */,
 				96EF396F18922612006D408C /* TweetCell.m in Sources */,
 				96EF394F18921F57006D408C /* TweetViewController.m in Sources */,
+				965B46AF18945E49007AA374 /* ComposeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,6 +490,7 @@
 				96EF396918921F57006D408C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		96EF396A18921F57006D408C /* Build configuration list for PBXNativeTarget "TwitterCloneTests" */ = {
 			isa = XCConfigurationList;
@@ -486,6 +499,7 @@
 				96EF396C18921F57006D408C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

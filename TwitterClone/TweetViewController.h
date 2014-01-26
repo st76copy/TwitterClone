@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ComposeViewController.h"
+#import "Tweet.h"
 
-@interface TweetViewController : UIViewController
+@interface TweetViewController : UIViewController <ComposeViewControllerDelegate>
 
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) Tweet *tweet;
+-(void)setTweet:(Tweet *)tweet;
 
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 @end

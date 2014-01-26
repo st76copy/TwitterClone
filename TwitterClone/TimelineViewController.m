@@ -12,13 +12,14 @@
 #import "TweetCell.h"
 #import "Tweet.h"
 
-@interface TimelineViewController () {
-    
-    NSMutableArray *_tweets;
-}
+@interface TimelineViewController ()
+-(void) loginWithUsername:(NSString *)username;
 @end
 
 @implementation TimelineViewController
+{
+    NSMutableArray *_tweets;
+}
 
 - (void)awakeFromNib
 {
@@ -28,29 +29,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    
-    // Remove Edit and Add buttons.
-    //self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    //self.navigationItem.rightBarButtonItem = addButton;
-    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)insertNewObject:(id)sender
-{
-    if (!_tweets) {
-        _tweets = [[NSMutableArray alloc] init];
-    }
-    [_tweets insertObject:[NSDate date] atIndex:0];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Table View
@@ -73,13 +57,19 @@
     return cell;
 }
 
-/*
-// Override to change row heights depending on content.
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return (indexPath.row % 2) ? 153.0 : 75.0;
+    if (_tweets[indexPath.row][@"tweetImage"]) {
+        return 155;         // Height of prototype cell, with tweetImage.
+    } else {
+        return 155 - 76;    // Above minus the height of the tweetImage.
+    }
 }
-*/
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -87,41 +77,58 @@
     return NO;
 }
 
-/*
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [_objects removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
+    if ([[segue identifier] isEqualToString:@"showTweet"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSDate *object = _tweets[indexPath.row];
-        [[segue destinationViewController] setDetailItem:object];
+        Tweet *tweet = _tweets[indexPath.row];
+        TweetViewController *tvc = (TweetViewController *)segue.destinationViewController;
+        [tvc setTweet:tweet];
+    } if ([segue.identifier isEqualToString:@"showLogin"]) {
+        // TODO - logout the current user
+        NSLog(@"Logout not yet implemented");
+        [segue.destinationViewController setDelegate:self];
+    } else if ([segue.identifier isEqualToString:@"showCompose"]) {
+        [segue.destinationViewController setReplyTo:nil];
+        [segue.destinationViewController setDelegate:self];
     }
 }
+
+#pragma mark - LoginViewControllerDelegate
+-(void)loginViewControllerDidFinish:(LoginViewController *)controller
+{
+    LoginViewController *lvc = (LoginViewController *)controller;
+    NSLog(@"Login successful for user %@", lvc.usernameField.text);
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - ComposeViewControllerDelegate
+-(void)composeViewControllerDidFinish:(ComposeViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Twitter API
+
+-(void) loginWithUsername:(NSString *)username;
+{
+
+    //NSString *url = [NSString stringWithFormat:
+    //                 @"http://api.twitter.com/oauth/authenticate&screen_name=%@", username];
+
+}
+
+
+
+//NSURL *url = [NSURL URLWithString:DVD_URL];
+//NSURLRequest *request = [NSURLRequest requestWithURL:url];
+//[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+// ~~~completionHandler:
+// ~~~^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//     ~~~if (connectionError) { NSLog(@"ERROR connecting to %@",DVD_URL); } else {
+//         ~~~id object=[NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//         ~~~NSLog(@"%@", object);  }}];  // Can use NSDictionary instead of id above.
+//}
 
 @end

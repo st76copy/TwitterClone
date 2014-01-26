@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoginViewController.h"
+#import "ComposeViewController.h"
 
-@interface TimelineViewController : UITableViewController
+@interface TimelineViewController : UITableViewController <LoginViewControllerDelegate, ComposeViewControllerDelegate>
 
 @end
