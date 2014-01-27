@@ -41,8 +41,8 @@
     _isAuthenticated = NO;
     _twitterAPI = [[TwitterAPI alloc] init];
     [_twitterAPI setDelegate:self];
-    [_twitterAPI accessTwitterAPI:HOME_TIMELINE];
-    [_twitterAPI accessTwitterAPI:SHOW_CURRENT_USER];
+    [_twitterAPI accessTwitterAPI:HOME_TIMELINE parameters:nil];
+    [_twitterAPI accessTwitterAPI:SHOW_CURRENT_USER parameters:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,11 +51,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)didPushRefresh:(id)sender {
+    [_spinner startAnimating];
+    [_twitterAPI accessTwitterAPI:HOME_TIMELINE parameters:nil];
+}
+
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     [_spinner startAnimating];
-    [_twitterAPI accessTwitterAPI:HOME_TIMELINE];
+    [_twitterAPI accessTwitterAPI:HOME_TIMELINE parameters:nil];
 }
 
 #pragma mark - TwitterApi
@@ -186,6 +191,19 @@
 #pragma mark - ComposeViewControllerDelegate
 -(void)composeViewControllerDidFinish:(ComposeViewController *)controller
 {
+    ComposeViewController *cvc = (ComposeViewController *)controller;
+    if (cvc.tweetText) {
+        Tweet *newTweet = _currentUserInfo;
+        newTweet.tweet = cvc.tweetText;
+        
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        // Sun Jan 26 10:33:03 +0000 2014
+        [df setDateFormat:@"eee MMM dd HH:mm:ss ZZZZ yyyy"];
+        newTweet.timestamp = [df stringFromDate:[NSDate date]];
+        [_tweets insertObject:newTweet atIndex:0];
+        [self.tableView reloadData];
+        [_twitterAPI accessTwitterAPI:POST_TWEET parameters:@{@"status": newTweet.tweet}];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

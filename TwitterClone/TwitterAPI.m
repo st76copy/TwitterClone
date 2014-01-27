@@ -14,9 +14,7 @@
 @interface TwitterAPI ()
 
 
-- (void)accessTwitterAPI:(TwitterOperation)operation;
-- (void)homeTimeline:(ACAccount *)twitterAccount;
-- (void)showCurrentUser:(ACAccount *)twitterAccount;
+- (void)accessTwitterAPI:(TwitterOperation)operation parameters:(NSDictionary *)parameters;
 
 //@property NSArray *dataSource;
     
@@ -26,7 +24,7 @@
 @implementation TwitterAPI
 
 
-- (void)accessTwitterAPI:(TwitterOperation)operation
+- (void)accessTwitterAPI:(TwitterOperation)operation parameters:(NSDictionary *)parameters
 {
     // Example usage: [self accessTwitterAPI:HOME_TIMELINE];
     
@@ -43,12 +41,40 @@
                  self.current_username = twitterAccount.username;
                  NSLog(@"Twitter account access granted, proceeding with request.");
                  
+                 NSURL *requestURL;
+                 SLRequestMethod myRequestMethod;
+                 NSDictionary  *myParams = parameters;
+                 BOOL expectingResponse = YES;
                  switch (operation) {
                      case HOME_TIMELINE:
-                         [self homeTimeline:twitterAccount];
+                         requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
+                         myRequestMethod = SLRequestMethodGET;
+                         if (!myParams) {
+                             myParams = @{ @"count": @"20", @"include_entities": @"1"};
+                         }
                          break;
+                         
                      case SHOW_CURRENT_USER:
-                         [self showCurrentUser:twitterAccount];
+                         requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/users/show.json"];
+                         myRequestMethod = SLRequestMethodGET;
+                         if (!myParams) {
+                             myParams = @{ @"screen_name": self.current_username};
+                         } else {
+                             [myParams setValue:self.current_username forKey:@"screen_name"];
+                         }
+                         break;
+                         
+                     case POST_TWEET:
+                         requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
+                         myRequestMethod = SLRequestMethodPOST;
+                         if (!myParams || !myParams[@"status"]) {
+                             NSLog(@"Cannot post new Tweet: Failed to specify 'status' parameter.");
+                             NSString *errorMessage = @"Cannot post Tweet due to internal error.";
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 [self.delegate twitterDidReturn:nil operation:operation errorMessage:errorMessage];
+                             });
+                         }
+                         expectingResponse = NO;
                          break;
                          
                      default:
@@ -59,6 +85,25 @@
                          });
                          break;
                  }
+                 
+                 SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:myRequestMethod URL:requestURL parameters:myParams];
+                 postRequest.account = twitterAccount;
+                 
+                 NSLog(@"Sending request: %@", requestURL);
+                 [postRequest performRequestWithHandler: ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
+                  {
+                      //if (expectingResponse) {
+                          NSArray *dataSource = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
+                          if (dataSource.count != 0) {
+                          
+                              NSLog(@"JSON Response: %@", dataSource);
+                              [self.delegate twitterDidReturn:dataSource operation:operation errorMessage:nil];
+                          } else {
+                              NSLog(@"Response contains no data. Error: %@", error);
+                          }
+                      //}
+                  }];
+                 
              } else {
                  NSLog(@"No Twitter Account found on this device.");
                  NSString *errorMessage = @"No Twitter accounts configured.      \n"
@@ -78,52 +123,6 @@
              dispatch_async(dispatch_get_main_queue(), ^{
                  [self.delegate twitterDidReturn:nil operation:operation errorMessage:errorMessage];
              });
-         }
-     }];
-}
-
-- (void)homeTimeline:(ACAccount *)twitterAccount
-{
-    // Do not call this method directly, must be call from requestAccessToAccountsWithType completion Block.
-    NSURL *requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
-    NSDictionary *parameters = @{ @"count": @"20", @"include_entities": @"1"};
-    
-    SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:requestURL parameters:parameters];
-    postRequest.account = twitterAccount;
-    
-    NSLog(@"Sending request: %@", requestURL);
-    [postRequest performRequestWithHandler: ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
-     {
-         NSArray *dataSource = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
-         if (dataSource.count != 0) {
-             
-             NSLog(@"JSON Response: %@", dataSource);
-             [self.delegate twitterDidReturn:dataSource operation:HOME_TIMELINE errorMessage:nil];
-         } else {
-             NSLog(@"Response contains no data. Error: %@", error);
-         }
-     }];
-}
-
-- (void)showCurrentUser:(ACAccount *)twitterAccount
-{
-    // Do not call this method directly, must be call from requestAccessToAccountsWithType completion Block.
-    NSURL *requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/users/show.json"];
-    NSDictionary *parameters = @{ @"screen_name": self.current_username};
-    
-    SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:requestURL parameters:parameters];
-    postRequest.account = twitterAccount;
-    
-    NSLog(@"Sending request: %@", requestURL);
-    [postRequest performRequestWithHandler: ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
-     {
-         NSArray *dataSource = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
-         if (dataSource.count != 0) {
-             
-             NSLog(@"JSON Response: %@", dataSource);
-             [self.delegate twitterDidReturn:dataSource operation:SHOW_CURRENT_USER errorMessage:nil];
-         } else {
-             NSLog(@"Response contains no data. Error: %@", error);
          }
      }];
 }

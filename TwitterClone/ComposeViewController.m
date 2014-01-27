@@ -42,6 +42,8 @@
     if (self.replyTo) {
         self.tweetField.text = [NSString stringWithFormat:@"@%@ ", self.replyTo];
     }
+    
+    [self.tweetField becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,12 +53,12 @@
 }
 
 - (IBAction)doneCompose:(id)sender {
-    // TODO
-    NSLog(@"Tweet not yet implemented");
+    self.tweetText = self.tweetField.text;
     [self.delegate composeViewControllerDidFinish:self];
 }
 
 - (IBAction)cancelCompose:(id)sender {
+    self.tweetText = nil;
     [self.delegate composeViewControllerDidFinish:self];
 }
 

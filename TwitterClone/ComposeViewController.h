@@ -21,8 +21,10 @@
 
 @property NSString *replyTo;
 @property Tweet *currentUserInfo;   // For user composing the tweet.
+@property NSString *tweetText;
 
 -(IBAction)doneCompose:(id)sender;
 -(IBAction)cancelCompose:(id)sender;
+
 
 @end

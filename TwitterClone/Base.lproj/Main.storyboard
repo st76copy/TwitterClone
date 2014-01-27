@@ -82,6 +82,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Home" id="tQt-TN-PWz">
+                        <barButtonItem key="leftBarButtonItem" title="Refresh" id="Xml-Ut-DRd">
+                            <connections>
+                                <action selector="didPushRefresh:" destination="pGg-6v-bdr" id="Zod-Z5-aQf"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Compose" id="JVg-At-GDR">
                             <connections>
                                 <segue destination="yka-VW-zUf" kind="modal" identifier="showCompose" id="EnC-Cc-it7"/>
@@ -280,6 +285,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="bCw-Yb-SMB"/>
+        <segue reference="EnC-Cc-it7"/>
     </inferredMetricsTieBreakers>
 </document>

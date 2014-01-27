@@ -15,6 +15,7 @@
 typedef enum {
     HOME_TIMELINE,
     SHOW_CURRENT_USER,
+    POST_TWEET,
 } TwitterOperation;
 
 // ErrorMessage is nil unless we failed to get access to Twitter on this device.
@@ -27,6 +28,6 @@ typedef enum {
 @property (weak, nonatomic) id <TwitterAPIDelegate> delegate;
 @property NSString *current_username;
 
-- (void)accessTwitterAPI:(TwitterOperation)operation;
+- (void)accessTwitterAPI:(TwitterOperation)operation parameters:(NSDictionary *)parameters;
 
 @end
