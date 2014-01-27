@@ -7,6 +7,7 @@
 //
 
 #import "TweetCell.h"
+#import "UIImageView+AFNetworking.h"
 
 @implementation TweetCell
 
@@ -14,13 +15,22 @@
 {
     self.nameLabel.text = tweet.name;
     self.usernameLabel.text = [NSString stringWithFormat:@"@%@", tweet.username];
-    // TODO: handle images
     self.userImage.image = tweet.userImage;
     
     self.tweetLabel.text = tweet.tweet;
-    // TODO: handle images
-    //self.tweetImage.image = tweet.tweetImage;
-    self.tweetImage.image = nil;
+    
+    // Asynchronous loading of tweet image, if we have one.
+    __weak TweetCell *weakCell = self; // Use weak ref in callback.
+    [self.tweetImage setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:tweet.tweetImageURL]
+        placeholderImage:nil success:
+        ^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            weakCell.tweetImage.image = image;
+            weakCell.tweetImage.contentMode = UIViewContentModeScaleToFill;
+            [weakCell setNeedsLayout];
+        }
+        failure:^(NSURLRequest *req, NSHTTPURLResponse *res, NSError *error) {
+            NSLog(@"Failed to load Tweet image at URL: %@\nerror:%@", tweet.tweetImageURL, error);
+        }];
     
     return self;
 }

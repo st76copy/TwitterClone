@@ -17,7 +17,7 @@
 @property UIImage *userImage;
 
 @property NSString *tweet;
-@property UIImage *tweetImage;
+@property NSURL *tweetImageURL;
 @property NSString *timestamp;
 @property BOOL favorited;
 @property BOOL retweeted;

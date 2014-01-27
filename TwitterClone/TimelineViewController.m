@@ -147,7 +147,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Tweet *tweet = _tweets[indexPath.row];
-    if (tweet.tweetImage) {
+    if (tweet.tweetImageURL) {
         return 155;         // Height of prototype cell, with tweetImage.
     } else {
         return 155 - 76;    // Above minus the height of the tweetImage.

@@ -7,6 +7,7 @@
 //
 
 #import "TweetViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface TweetViewController ()
 - (void)configureView;
@@ -14,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *userImage;
 @property (weak, nonatomic) IBOutlet UILabel *tweetLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *tweetImage;
 @end
 
 @implementation TweetViewController
@@ -37,6 +39,17 @@
         self.usernameLabel.text = [NSString stringWithFormat:@"@%@", self.tweet.username];
         self.userImage.image = self.tweet.userImage;
         self.tweetLabel.text = self.tweet.tweet;
+        
+        [self.tweetImage setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:self.tweet.tweetImageURL]
+                               placeholderImage:nil success:
+         ^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+             self.tweetImage.image = image;
+             self.tweetImage.contentMode = UIViewContentModeScaleToFill;
+             [self.tweetImage setNeedsLayout];
+         }
+        failure:^(NSURLRequest *req, NSHTTPURLResponse *res, NSError *error) {
+            NSLog(@"Failed to load Tweet image at URL: %@\nerror:%@", self.tweet.tweetImageURL, error);
+        }];
     }
 }
 

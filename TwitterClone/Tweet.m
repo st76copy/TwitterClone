@@ -7,6 +7,7 @@
 //
 
 #import "Tweet.h"
+#import "UIImageView+AFNetworking.h"
 
 @implementation Tweet
 
@@ -20,11 +21,16 @@
     self.userImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:user_image_url]];
     
     self.tweet = dict[@"text"];
-    self.tweetImage = dict[@"tweetImage"];
     self.tweetId = dict[@"id_str"];
     self.timestamp = dict[@"created_at"];
     self.favorited = [dict[@"favorited"] boolValue];
     self.retweeted = [dict[@"retweeted"] boolValue];
+    if (dict[@"entities"][@"media"]) {
+        if ([dict[@"entities"][@"media"][0][@"type"]  isEqual:@"photo"]) {
+            NSString *url = dict[@"entities"][@"media"][0][@"media_url"];
+            self.tweetImageURL = [NSURL URLWithString:url];
+        }
+    }
     
     return self;
 }
