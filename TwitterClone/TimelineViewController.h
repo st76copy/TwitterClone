@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
 #import "ComposeViewController.h"
+#import "TwitterAPI.h"
 
-@interface TimelineViewController : UITableViewController <LoginViewControllerDelegate, ComposeViewControllerDelegate>
+@interface TimelineViewController : UITableViewController <TwitterAPIDelegate, LoginViewControllerDelegate, ComposeViewControllerDelegate, UIAlertViewDelegate>
 
 @end

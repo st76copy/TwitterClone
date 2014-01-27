@@ -19,6 +19,10 @@
 @implementation TimelineViewController
 {
     NSMutableArray *_tweets;
+    NSMutableArray *_dataFromTwitter;
+    BOOL _isAuthenticated;
+    UIActivityIndicatorView *_spinner;
+    TwitterAPI *_twitterAPI;
 }
 
 - (void)awakeFromNib
@@ -29,12 +33,62 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _isAuthenticated = NO;
+    _twitterAPI = [[TwitterAPI alloc] init];
+    [_twitterAPI setDelegate:self];
+    [_twitterAPI accessTwitterAPI:HOME_TIMELINE];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [_spinner startAnimating];
+    [_twitterAPI accessTwitterAPI:HOME_TIMELINE];
+}
+
+#pragma mark - TwitterApi
+- (void)twitterDidReturn:(NSArray *)data operation:(TwitterOperation)operation errorMessage:(NSString *)errorMessage
+{
+    if (_spinner.isAnimating) {
+        [_spinner stopAnimating];
+    }
+    
+    if (errorMessage) {
+        _isAuthenticated = NO;
+        NSLog(@"TwitterDidReturn with error.");
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Setup Error"
+                                              message:errorMessage delegate:self
+                                              cancelButtonTitle:@"Retry"
+                                              otherButtonTitles:nil, nil
+        ];
+        [alertView show];
+    } else {
+        _isAuthenticated = YES;
+        NSLog(@"TwitterDidReturn without error.");
+        
+        switch (operation) {
+                
+            case HOME_TIMELINE:
+                _dataFromTwitter = [[NSMutableArray alloc] initWithArray:data];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+                break;
+                
+            //default:
+            //    NSLog(@"TwitterDidReturn with unknown operation: %i", operation);
+            //    break;
+        }
+    }
+    
 }
 
 #pragma mark - Table View
@@ -46,12 +100,24 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (!_isAuthenticated) {
+        return 1;
+    }
+    
     //return _tweets.count;
     return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!_isAuthenticated) {
+        UITableViewCell *cell = [[UITableViewCell alloc] init];
+        _spinner.center = cell.center;
+        [cell addSubview:_spinner];
+        [_spinner startAnimating];
+        return cell;
+    }
+    
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell" forIndexPath:indexPath];
     
     return cell;
