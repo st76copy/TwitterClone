@@ -12,24 +12,21 @@
 
 - (Tweet *)initWithDictionary:(NSDictionary *)dict
 {
-    self.name = dict[@"name"];
-    self.username = dict[@"username"];
-    self.tweet = dict[@"userImage"];
-    self.userImage = dict[@"tweet"];
+    self.name = dict[@"user"][@"name"];
+    self.username = dict[@"user"][@"screen_name"];
+    self.userId = dict[@"user"][@"id_str"];
+    
+    NSURL *user_image_url = [NSURL URLWithString:dict[@"user"][@"profile_image_url"]];
+    self.userImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:user_image_url]];
+    
+    self.tweet = dict[@"text"];
     self.tweetImage = dict[@"tweetImage"];
+    self.tweetId = dict[@"id_str"];
+    self.timestamp = dict[@"created_at"];
+    self.favorited = [dict[@"favorited"] boolValue];
+    self.retweeted = [dict[@"retweeted"] boolValue];
     
     return self;
 }
-
-//- (Tweet *)initWithDummyData
-//{
-//    return [self initWithDictionary:@{
-//          @"name": @"Destiny The GAME",
-//          @"username": @"destinythegame",
-//          @"userImage": [[UIImage alloc]init],
-//          @"tweet": @"#CaptionThis: Send us your best caption for this image, and we'll share our favorites tomorrow!",
-//          @"tweetImage": [[UIImage alloc]init],
-//     }];
-//}
 
 @end

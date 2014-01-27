@@ -18,5 +18,11 @@
 
 @property NSString *tweet;
 @property UIImage *tweetImage;
+@property NSString *timestamp;
+@property BOOL favorited;
+@property BOOL retweeted;
+
+@property NSString *tweetId;
+@property NSString *userId;
 
 @end

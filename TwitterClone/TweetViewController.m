@@ -29,22 +29,12 @@
 
 #pragma mark - Managing the detail item
 
-- (void)setTweet:(id)newTweet
-{
-    if (self.tweet != newTweet) {
-        self.tweet = newTweet;
-        
-        // Update the view.
-        [self configureView];
-    }
-}
-
 - (void)configureView
 {
     // Update the user interface for the detail item.
     if (self.tweet) {
         self.nameLabel.text = self.tweet.name;
-        self.usernameLabel.text = self.tweet.username;
+        self.usernameLabel.text = [NSString stringWithFormat:@"@%@", self.tweet.username];
         self.userImage.image = self.tweet.userImage;
         self.tweetLabel.text = self.tweet.tweet;
     }

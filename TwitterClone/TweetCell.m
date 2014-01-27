@@ -13,11 +13,14 @@
 - (TweetCell *)initWithTweet:(Tweet *)tweet
 {
     self.nameLabel.text = tweet.name;
-    self.usernameLabel.text = tweet.username;
+    self.usernameLabel.text = [NSString stringWithFormat:@"@%@", tweet.username];
+    // TODO: handle images
     self.userImage.image = tweet.userImage;
     
     self.tweetLabel.text = tweet.tweet;
-    self.tweetImage.image = tweet.tweetImage;
+    // TODO: handle images
+    //self.tweetImage.image = tweet.tweetImage;
+    self.tweetImage.image = nil;
     
     return self;
 }

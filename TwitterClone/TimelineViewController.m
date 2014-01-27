@@ -13,7 +13,7 @@
 #import "Tweet.h"
 
 @interface TimelineViewController ()
--(void) loginWithUsername:(NSString *)username;
+
 @end
 
 @implementation TimelineViewController
@@ -78,9 +78,20 @@
                 
             case HOME_TIMELINE:
                 _dataFromTwitter = [[NSMutableArray alloc] initWithArray:data];
+                _tweets = [[NSMutableArray alloc] init];
+                for (NSDictionary *dict in data) {
+                    Tweet *tweet = [[Tweet alloc] initWithDictionary:dict];
+                    [_tweets addObject:tweet];
+                }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView reloadData];
                 });
+                
+                
+                // TESTING
+                NSLog(@"tweet keys: %@", [data[0] allKeys]);
+    
+                
                 break;
                 
             //default:
@@ -104,8 +115,11 @@
         return 1;
     }
     
-    //return _tweets.count;
-    return 5;
+    if (!_tweets) {
+        return 0;
+    }
+    
+    return [_tweets count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -119,6 +133,8 @@
     }
     
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell" forIndexPath:indexPath];
+    Tweet *tweet = [_tweets objectAtIndex:indexPath.row];
+    cell = [cell initWithTweet:tweet];
     
     return cell;
 }
@@ -130,7 +146,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_tweets[indexPath.row][@"tweetImage"]) {
+    Tweet *tweet = _tweets[indexPath.row];
+    if (tweet.tweetImage) {
         return 155;         // Height of prototype cell, with tweetImage.
     } else {
         return 155 - 76;    // Above minus the height of the tweetImage.
@@ -150,23 +167,13 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         Tweet *tweet = _tweets[indexPath.row];
         TweetViewController *tvc = (TweetViewController *)segue.destinationViewController;
-        [tvc setTweet:tweet];
-    } if ([segue.identifier isEqualToString:@"showLogin"]) {
-        // TODO - logout the current user
-        NSLog(@"Logout not yet implemented");
-        [segue.destinationViewController setDelegate:self];
+        tvc.tweet = tweet;
     } else if ([segue.identifier isEqualToString:@"showCompose"]) {
         [segue.destinationViewController setReplyTo:nil];
         [segue.destinationViewController setDelegate:self];
+    } else {
+        NSLog(@"Unrecognized segue.identifier: %@", segue.identifier);
     }
-}
-
-#pragma mark - LoginViewControllerDelegate
--(void)loginViewControllerDidFinish:(LoginViewController *)controller
-{
-    LoginViewController *lvc = (LoginViewController *)controller;
-    NSLog(@"Login successful for user %@", lvc.usernameField.text);
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - ComposeViewControllerDelegate
@@ -174,27 +181,5 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
-#pragma mark - Twitter API
-
--(void) loginWithUsername:(NSString *)username;
-{
-
-    //NSString *url = [NSString stringWithFormat:
-    //                 @"http://api.twitter.com/oauth/authenticate&screen_name=%@", username];
-
-}
-
-
-
-//NSURL *url = [NSURL URLWithString:DVD_URL];
-//NSURLRequest *request = [NSURLRequest requestWithURL:url];
-//[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-// ~~~completionHandler:
-// ~~~^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-//     ~~~if (connectionError) { NSLog(@"ERROR connecting to %@",DVD_URL); } else {
-//         ~~~id object=[NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//         ~~~NSLog(@"%@", object);  }}];  // Can use NSDictionary instead of id above.
-//}
 
 @end

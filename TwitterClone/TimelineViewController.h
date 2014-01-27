@@ -11,6 +11,6 @@
 #import "ComposeViewController.h"
 #import "TwitterAPI.h"
 
-@interface TimelineViewController : UITableViewController <TwitterAPIDelegate, LoginViewControllerDelegate, ComposeViewControllerDelegate, UIAlertViewDelegate>
+@interface TimelineViewController : UITableViewController <TwitterAPIDelegate, ComposeViewControllerDelegate, UIAlertViewDelegate>
 
 @end

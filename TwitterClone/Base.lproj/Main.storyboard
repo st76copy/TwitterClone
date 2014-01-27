@@ -71,7 +71,7 @@
                                     <outlet property="tweetLabel" destination="u3f-uJ-98P" id="9Y0-iE-ZvI"/>
                                     <outlet property="userImage" destination="fSi-aQ-jYT" id="Og8-Ix-ZjD"/>
                                     <outlet property="usernameLabel" destination="0X7-oM-asW" id="ru3-Ln-iFh"/>
-                                    <segue destination="Ah7-4n-0Wa" kind="push" identifier="showDetail" id="jUr-3t-vfg"/>
+                                    <segue destination="Ah7-4n-0Wa" kind="push" identifier="showTweet" id="jUr-3t-vfg"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -82,11 +82,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Home" id="tQt-TN-PWz">
-                        <barButtonItem key="leftBarButtonItem" title="Sign Out" id="3g1-0l-LTf">
-                            <connections>
-                                <segue destination="Wbd-Jy-Wy1" kind="modal" identifier="showLogin" id="gFP-Vy-xgz"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Compose" id="JVg-At-GDR">
                             <connections>
                                 <segue destination="yka-VW-zUf" kind="modal" identifier="showCompose" id="EnC-Cc-it7"/>
@@ -177,52 +172,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7iv-br-wZG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="785" y="854"/>
-        </scene>
-        <!--Login View Controller - Login-->
-        <scene sceneID="OaX-xb-dkE">
-            <objects>
-                <viewController title="Login" id="Wbd-Jy-Wy1" customClass="LoginViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="L15-Q3-iWY"/>
-                        <viewControllerLayoutGuide type="bottom" id="NBD-a7-rVm"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="YiA-Ky-urY">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KTa-Rk-gfa">
-                                <rect key="frame" x="137" y="197" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Login">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="loginButton:" destination="Wbd-Jy-Wy1" eventType="touchUpInside" id="tAW-2s-7to"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="twitter username" borderStyle="roundedRect" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TnZ-dH-DTC">
-                                <rect key="frame" x="73" y="121" width="174" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="password" borderStyle="roundedRect" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gTw-hF-QEP">
-                                <rect key="frame" x="73" y="159" width="174" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="passwordField" destination="gTw-hF-QEP" id="5DT-ht-afj"/>
-                        <outlet property="usernameField" destination="TnZ-dH-DTC" id="L5w-iE-kTj"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LqG-yy-Ts6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="198" y="832"/>
         </scene>
         <!--Tweet View Controller - Detail-->
         <scene sceneID="Cn3-H9-jdl">
