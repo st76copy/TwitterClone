@@ -1,5 +1,5 @@
 //
-//  DetailViewController.h
+//  TweetViewController.h
 //  TwitterClone
 //
 //  Created by Amber Roy on 1/23/14.
@@ -13,6 +13,7 @@
 @interface TweetViewController : UIViewController <ComposeViewControllerDelegate>
 
 @property (strong, nonatomic) Tweet *tweet;
+@property (strong, nonatomic) Tweet *currentUserInfo;
 -(void)setTweet:(Tweet *)tweet;
 
 @end

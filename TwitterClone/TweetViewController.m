@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *userImage;
 @property (weak, nonatomic) IBOutlet UILabel *tweetLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *tweetImage;
+@property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
 @end
 
 @implementation TweetViewController
@@ -39,6 +40,12 @@
         self.usernameLabel.text = [NSString stringWithFormat:@"@%@", self.tweet.username];
         self.userImage.image = self.tweet.userImage;
         self.tweetLabel.text = self.tweet.tweet;
+        
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"eee MMM dd HH:mm:ss ZZZZ yyyy"];// Sun Jan 26 10:33:03 +0000 2014
+        NSDate *date = [df dateFromString:self.tweet.timestamp];
+        [df setDateFormat:@"M/d/yy, HH:mm a"];              // 1/26/14, 10:33 AM
+        self.timestampLabel.text = [df stringFromDate:date];
         
         [self.tweetImage setImageWithURLRequest:[[NSURLRequest alloc] initWithURL:self.tweet.tweetImageURL]
                                placeholderImage:nil success:
@@ -71,6 +78,7 @@
     if ([segue.identifier isEqualToString:@"showComposeWithReply"]) {
         [segue.destinationViewController setReplyTo:self.tweet.username];
         [segue.destinationViewController setDelegate:self];
+        [segue.destinationViewController setCurrentUserInfo:self.currentUserInfo];
     }
 }
 

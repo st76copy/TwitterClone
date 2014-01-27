@@ -34,9 +34,9 @@
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view.
-    self.nameLabel.text = self.senderName;
-    self.usernameLabel.text = self.senderUsername;
-    self.userImage.image = self.senderImage;
+    self.nameLabel.text = self.currentUserInfo.name;
+    self.usernameLabel.text = [NSString stringWithFormat:@"@%@", self.currentUserInfo.username];
+    self.userImage.image = self.currentUserInfo.userImage;
     
     // Start the tweet with @recipient
     if (self.replyTo) {

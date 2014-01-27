@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Tweet.h"
 
 @class ComposeViewController;
 
@@ -19,10 +20,7 @@
 @property (weak, nonatomic) id <ComposeViewControllerDelegate> delegate;
 
 @property NSString *replyTo;
-// Following are for the current user, who is composing the tweet.
-@property NSString *senderName;
-@property NSString *senderUsername;
-@property UIImage *senderImage;
+@property Tweet *currentUserInfo;   // For user composing the tweet.
 
 -(IBAction)doneCompose:(id)sender;
 -(IBAction)cancelCompose:(id)sender;

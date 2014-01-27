@@ -1,5 +1,5 @@
 //
-//  MasterViewController.m
+//  TimelineViewController.m
 //  TwitterClone
 //
 //  Created by Amber Roy on 1/23/14.
@@ -18,11 +18,14 @@
 
 @implementation TimelineViewController
 {
+    TwitterAPI *_twitterAPI;
     NSMutableArray *_tweets;
     NSMutableArray *_dataFromTwitter;
+    
+    Tweet *_currentUserInfo;
+    
     BOOL _isAuthenticated;
     UIActivityIndicatorView *_spinner;
-    TwitterAPI *_twitterAPI;
 }
 
 - (void)awakeFromNib
@@ -39,6 +42,7 @@
     _twitterAPI = [[TwitterAPI alloc] init];
     [_twitterAPI setDelegate:self];
     [_twitterAPI accessTwitterAPI:HOME_TIMELINE];
+    [_twitterAPI accessTwitterAPI:SHOW_CURRENT_USER];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,7 +80,7 @@
         
         switch (operation) {
                 
-            case HOME_TIMELINE:
+            case HOME_TIMELINE: {
                 _dataFromTwitter = [[NSMutableArray alloc] initWithArray:data];
                 _tweets = [[NSMutableArray alloc] init];
                 for (NSDictionary *dict in data) {
@@ -86,17 +90,18 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView reloadData];
                 });
-                
-                
-                // TESTING
-                NSLog(@"tweet keys: %@", [data[0] allKeys]);
-    
-                
                 break;
+            }
                 
-            //default:
-            //    NSLog(@"TwitterDidReturn with unknown operation: %i", operation);
-            //    break;
+            case SHOW_CURRENT_USER: {
+                NSLog(@"Current User Data: %@", data);
+                _currentUserInfo = [[Tweet alloc] initWithDictionary:@{@"user": data}];
+                break;
+            }
+                
+            default:
+                NSLog(@"TwitterDidReturn with unknown operation: %i", operation);
+                break;
         }
     }
     
@@ -168,7 +173,9 @@
         Tweet *tweet = _tweets[indexPath.row];
         TweetViewController *tvc = (TweetViewController *)segue.destinationViewController;
         tvc.tweet = tweet;
+        [segue.destinationViewController setCurrentUserInfo:_currentUserInfo];
     } else if ([segue.identifier isEqualToString:@"showCompose"]) {
+        [segue.destinationViewController setCurrentUserInfo:_currentUserInfo];
         [segue.destinationViewController setReplyTo:nil];
         [segue.destinationViewController setDelegate:self];
     } else {

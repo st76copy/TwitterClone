@@ -16,7 +16,8 @@
 
 - (void)accessTwitterAPI:(TwitterOperation)operation;
 - (void)homeTimeline:(ACAccount *)twitterAccount;
-    
+- (void)showCurrentUser:(ACAccount *)twitterAccount;
+
 //@property NSArray *dataSource;
     
 @end
@@ -39,11 +40,15 @@
              NSArray *arrayOfAccounts = [accountStore accountsWithAccountType:accountType];
              if ([arrayOfAccounts count] > 0) {
                  ACAccount *twitterAccount = [arrayOfAccounts lastObject];
+                 self.current_username = twitterAccount.username;
                  NSLog(@"Twitter account access granted, proceeding with request.");
                  
                  switch (operation) {
                      case HOME_TIMELINE:
                          [self homeTimeline:twitterAccount];
+                         break;
+                     case SHOW_CURRENT_USER:
+                         [self showCurrentUser:twitterAccount];
                          break;
                          
                      default:
@@ -94,9 +99,29 @@
              
              NSLog(@"JSON Response: %@", dataSource);
              [self.delegate twitterDidReturn:dataSource operation:HOME_TIMELINE errorMessage:nil];
-             //dispatch_async(dispatch_get_main_queue(), ^{
-             //    [self.tweetTableView reloadData];
-             //});
+         } else {
+             NSLog(@"Response contains no data. Error: %@", error);
+         }
+     }];
+}
+
+- (void)showCurrentUser:(ACAccount *)twitterAccount
+{
+    // Do not call this method directly, must be call from requestAccessToAccountsWithType completion Block.
+    NSURL *requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/users/show.json"];
+    NSDictionary *parameters = @{ @"screen_name": self.current_username};
+    
+    SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:requestURL parameters:parameters];
+    postRequest.account = twitterAccount;
+    
+    NSLog(@"Sending request: %@", requestURL);
+    [postRequest performRequestWithHandler: ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
+     {
+         NSArray *dataSource = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
+         if (dataSource.count != 0) {
+             
+             NSLog(@"JSON Response: %@", dataSource);
+             [self.delegate twitterDidReturn:dataSource operation:SHOW_CURRENT_USER errorMessage:nil];
          } else {
              NSLog(@"Response contains no data. Error: %@", error);
          }

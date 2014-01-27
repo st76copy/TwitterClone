@@ -1,5 +1,5 @@
 //
-//  MasterViewController.h
+//  TimelineViewController.h
 //  TwitterClone
 //
 //  Created by Amber Roy on 1/23/14.
