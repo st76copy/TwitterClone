@@ -17,17 +17,35 @@
 @property (weak, nonatomic) IBOutlet UILabel *tweetLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *tweetImage;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *replyButton;
+@property (weak, nonatomic) IBOutlet UIButton *retweetButton;
+@property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+
+@property TwitterAPI *twitterAPI;
+
 @end
 
 @implementation TweetViewController
 
-- (IBAction)retweet:(id)sender {
-    // TODO
-    NSLog(@"Retweet not yet implemented.");
+- (IBAction)retweet:(id)sender
+{
+    if (!self.tweet.retweeted) {
+        self.tweet.retweeted = YES;
+        [self.retweetButton setTintColor:[UIColor grayColor]];
+        
+        [self.twitterAPI accessTwitterAPI:POST_RETWEET parameters:@{@"id": self.tweet.tweetId}];
+    }
 }
-- (IBAction)favorite:(id)sender {
-    // TODO
-    NSLog(@"Favorite not yet implemented.");
+
+- (IBAction)favorite:(id)sender
+{
+    if (!self.tweet.favorited) {
+        self.tweet.favorited = YES;
+        [self.favoriteButton setTintColor:[UIColor grayColor]];
+        
+        [self.twitterAPI accessTwitterAPI:FAVORITES_CREATE parameters:@{@"id": self.tweet.tweetId}];
+    }
 }
 
 #pragma mark - Managing the detail item
@@ -40,6 +58,13 @@
         self.usernameLabel.text = [NSString stringWithFormat:@"@%@", self.tweet.username];
         self.userImage.image = self.tweet.userImage;
         self.tweetLabel.text = self.tweet.tweet;
+        
+        if (self.tweet.favorited) {
+            [self.favoriteButton setTintColor:[UIColor grayColor]];
+        }
+        if (self.tweet.retweeted) {
+            [self.retweetButton setTintColor:[UIColor grayColor]];
+        }
         
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
         [df setDateFormat:@"eee MMM dd HH:mm:ss ZZZZ yyyy"];// Sun Jan 26 10:33:03 +0000 2014
@@ -63,7 +88,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+    if (!self.twitterAPI) {
+        self.twitterAPI = [[TwitterAPI alloc] init];
+        self.twitterAPI.delegate = self;
+    }
     [self configureView];
 }
 
@@ -76,18 +105,16 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"showComposeWithReply"]) {
-        [segue.destinationViewController setReplyTo:self.tweet.username];
-        [segue.destinationViewController setDelegate:self];
+        [segue.destinationViewController setReplyTo:self.tweet];
+        [segue.destinationViewController setDelegate:self.timelineViewController];
         [segue.destinationViewController setCurrentUserInfo:self.currentUserInfo];
     }
 }
 
-
-
-#pragma mark - ComposeViewControllerDelegate
--(void)composeViewControllerDidFinish:(ComposeViewController *)controller
+#pragma mark - TwitterAPIDelegate
+-(void)twitterDidReturn:(NSArray *)data operation:(TwitterOperation)operation errorMessage:(NSString *)errorMessage
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    // No action needed. 
 }
 
 @end

@@ -81,7 +81,6 @@
         [alertView show];
     } else {
         _isAuthenticated = YES;
-        NSLog(@"TwitterDidReturn without error.");
         
         switch (operation) {
                 
@@ -99,8 +98,13 @@
             }
                 
             case SHOW_CURRENT_USER: {
-                NSLog(@"Current User Data: %@", data);
+                NSLog(@"Done getting current user data.");
                 _currentUserInfo = [[Tweet alloc] initWithDictionary:@{@"user": data}];
+                break;
+            }
+                
+            case POST_TWEET: {
+                NSLog(@"Done posting tweet.");
                 break;
             }
                 
@@ -178,6 +182,7 @@
         Tweet *tweet = _tweets[indexPath.row];
         TweetViewController *tvc = (TweetViewController *)segue.destinationViewController;
         tvc.tweet = tweet;
+        tvc.timelineViewController = self;
         [segue.destinationViewController setCurrentUserInfo:_currentUserInfo];
     } else if ([segue.identifier isEqualToString:@"showCompose"]) {
         [segue.destinationViewController setCurrentUserInfo:_currentUserInfo];
@@ -202,7 +207,15 @@
         newTweet.timestamp = [df stringFromDate:[NSDate date]];
         [_tweets insertObject:newTweet atIndex:0];
         [self.tableView reloadData];
-        [_twitterAPI accessTwitterAPI:POST_TWEET parameters:@{@"status": newTweet.tweet}];
+        
+        if (cvc.replyTo) {
+            NSDictionary *parameters = @{@"status": newTweet.tweet,
+                           @"in_reply_to_status_id": cvc.replyTo.tweetId};
+            [_twitterAPI accessTwitterAPI:POST_TWEET parameters:parameters];
+        } else {
+            NSDictionary *parameters = @{@"status": newTweet.tweet};
+            [_twitterAPI accessTwitterAPI:POST_TWEET parameters:parameters];
+        }
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }

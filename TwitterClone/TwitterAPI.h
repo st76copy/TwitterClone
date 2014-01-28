@@ -16,6 +16,8 @@ typedef enum {
     HOME_TIMELINE,
     SHOW_CURRENT_USER,
     POST_TWEET,
+    POST_RETWEET,
+    FAVORITES_CREATE,
 } TwitterOperation;
 
 // ErrorMessage is nil unless we failed to get access to Twitter on this device.

@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "ComposeViewController.h"
+#import "TimelineViewController.h"
 #import "Tweet.h"
+#import "TwitterAPI.h"
 
-@interface TweetViewController : UIViewController <ComposeViewControllerDelegate>
+@interface TweetViewController : UIViewController <TwitterAPIDelegate>
 
 @property (strong, nonatomic) Tweet *tweet;
 @property (strong, nonatomic) Tweet *currentUserInfo;
+@property TimelineViewController *timelineViewController;
 -(void)setTweet:(Tweet *)tweet;
 
 @end

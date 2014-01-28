@@ -16,8 +16,6 @@
 
 - (void)accessTwitterAPI:(TwitterOperation)operation parameters:(NSDictionary *)parameters;
 
-//@property NSArray *dataSource;
-    
 @end
 
 
@@ -44,7 +42,6 @@
                  NSURL *requestURL;
                  SLRequestMethod myRequestMethod;
                  NSDictionary  *myParams = parameters;
-                 BOOL expectingResponse = YES;
                  switch (operation) {
                      case HOME_TIMELINE:
                          requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
@@ -74,7 +71,35 @@
                                  [self.delegate twitterDidReturn:nil operation:operation errorMessage:errorMessage];
                              });
                          }
-                         expectingResponse = NO;
+                         break;
+                         
+                     case POST_RETWEET: {
+                         myRequestMethod = SLRequestMethodPOST;
+                         if (!myParams || !myParams[@"id"]) {
+                             NSLog(@"Cannot retweet: Failed to specify 'id' parameter.");
+                             NSString *errorMessage = @"Cannot retweet due to internal error.";
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 [self.delegate twitterDidReturn:nil operation:operation errorMessage:errorMessage];
+                             });
+                         }
+                         NSString *url_string = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/retweet/%@.json", myParams[@"id"]];
+                         NSMutableDictionary *dictWithoutId = [NSMutableDictionary dictionaryWithDictionary:myParams];
+                         [dictWithoutId removeObjectForKey:@"id"];
+                         myParams = [NSDictionary dictionaryWithDictionary:dictWithoutId];
+                         requestURL = [NSURL URLWithString:url_string];
+                         break;
+                     }
+                         
+                     case FAVORITES_CREATE:
+                         requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/favorites/create.json"];
+                         myRequestMethod = SLRequestMethodPOST;
+                         if (!myParams || !myParams[@"id"]) {
+                             NSLog(@"Cannot favorite the tweet: Failed to specify 'id' parameter.");
+                             NSString *errorMessage = @"Cannot favorite tweet due to internal error.";
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 [self.delegate twitterDidReturn:nil operation:operation errorMessage:errorMessage];
+                             });
+                         }
                          break;
                          
                      default:
@@ -92,16 +117,15 @@
                  NSLog(@"Sending request: %@", requestURL);
                  [postRequest performRequestWithHandler: ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
                   {
-                      //if (expectingResponse) {
-                          NSArray *dataSource = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
-                          if (dataSource.count != 0) {
+                      NSArray *dataSource = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
+                      if (dataSource.count != 0) {
                           
-                              NSLog(@"JSON Response: %@", dataSource);
-                              [self.delegate twitterDidReturn:dataSource operation:operation errorMessage:nil];
-                          } else {
-                              NSLog(@"Response contains no data. Error: %@", error);
-                          }
-                      //}
+                          // Uncomment to show respone from Twitter server.
+                          //NSLog(@"JSON Response: %@", dataSource);
+                          [self.delegate twitterDidReturn:dataSource operation:operation errorMessage:nil];
+                      } else {
+                          NSLog(@"Response contains no data. Error: %@", error);
+                      }
                   }];
                  
              } else {

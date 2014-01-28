@@ -19,7 +19,7 @@
 
 @property (weak, nonatomic) id <ComposeViewControllerDelegate> delegate;
 
-@property NSString *replyTo;
+@property Tweet *replyTo;
 @property Tweet *currentUserInfo;   // For user composing the tweet.
 @property NSString *tweetText;
 

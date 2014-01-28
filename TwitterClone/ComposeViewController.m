@@ -40,7 +40,7 @@
     
     // Start the tweet with @recipient
     if (self.replyTo) {
-        self.tweetField.text = [NSString stringWithFormat:@"@%@ ", self.replyTo];
+        self.tweetField.text = [NSString stringWithFormat:@"@%@ ", self.replyTo.username];
     }
     
     [self.tweetField becomeFirstResponder];

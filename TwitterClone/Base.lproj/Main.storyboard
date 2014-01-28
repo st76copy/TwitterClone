@@ -266,7 +266,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="favoriteButton" destination="4Cv-OK-NEh" id="UUd-Rn-L9r"/>
                         <outlet property="nameLabel" destination="PZd-xf-xbH" id="LIs-cj-1b8"/>
+                        <outlet property="replyButton" destination="xVI-v5-omC" id="6vb-3K-wZz"/>
+                        <outlet property="retweetButton" destination="Qes-Qw-PFt" id="XQe-S1-s4o"/>
                         <outlet property="timestampLabel" destination="hlu-hP-vfg" id="HV0-Er-qS8"/>
                         <outlet property="tweetImage" destination="OJj-AJ-49q" id="ZOI-gK-Uac"/>
                         <outlet property="tweetLabel" destination="M5r-Cp-rLV" id="9e0-S0-olt"/>
@@ -285,6 +288,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="EnC-Cc-it7"/>
+        <segue reference="bCw-Yb-SMB"/>
     </inferredMetricsTieBreakers>
 </document>
